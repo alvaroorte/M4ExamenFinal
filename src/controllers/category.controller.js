@@ -4,7 +4,7 @@ import { Product } from '../models/Product.js';
 export async function getCategories(req, res) {
   try {
     const categories = await Category.findAll({
-      attributes: ['id', 'userId', 'nombre'],
+      attributes: ['id', 'usuarioId', 'nombre'],
       order: [['id', 'DESC']],
     });
     res.json(categories);
@@ -16,10 +16,10 @@ export async function getCategories(req, res) {
 }
 
 export async function createCategory(req, res) {
-  const { nombre, userId } = req.body;
+  const { nombre, usuarioId } = req.body;
   try {
     const newCategory = await Category.create({
-      userId,
+      usuarioId,
       nombre
     });
     res.json(newCategory);
@@ -49,7 +49,7 @@ export async function updateCategory(req, res) {
 
   try {
     const category = await Category.findOne({
-      attributes: ['nombre', 'userId'],
+      attributes: ['nombre', 'usuarioId'],
       where: { id },
     });
 
@@ -72,7 +72,7 @@ export async function deleteCategory(req, res) {
       where: { categoriaId: id },
     });
     await Category.destroy({
-      where: { userId: id },
+      where: { usuarioId: id },
     });
     return res.sendStatus(204);
   } catch (error) {
