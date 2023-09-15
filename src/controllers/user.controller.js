@@ -1,6 +1,28 @@
 import { User } from '../models/User.js';
 import { Category } from '../models/Categoria.js';
 import { Product } from '../models/Product.js';
+import jwt from 'jsonwebtoken';
+import { token } from 'morgan';
+
+export async function login(req, res) {
+  const { correo, contrasena } = req.body;
+  try {
+    const user = await User.findOne({
+      where: { correo, contrasena},
+    });
+    if (user) {
+      jwt.sign( {user}, 'secretkey', (err, token) => {
+        return res.json({user, token});
+      })
+    } else {
+      return res.status(401).json({message: 'usuario incorrecto'})
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}
 
 export async function getUsers(req, res) {
   try {

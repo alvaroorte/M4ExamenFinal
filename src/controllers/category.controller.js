@@ -1,6 +1,7 @@
 import { Category } from '../models/Categoria.js';
 import { Product } from '../models/Product.js';
 
+
 export async function getCategories(req, res) {
   try {
     const categories = await Category.findAll({
