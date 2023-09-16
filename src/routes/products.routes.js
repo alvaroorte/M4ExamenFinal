@@ -7,6 +7,22 @@ import {
   deleteProduct,
 } from '../controllers/product.controller.js';
 import {verifyToken} from "categories.routes.js";
+import jwt from 'jsonwebtoken';
+
+export function verifyToken(req, res, next) {
+  const bearer = req.headers['authorization'];
+  console.log('bearer:  '+bearer);
+  if ( typeof bearer !== 'undefined' ) {
+    const token = bearer.split(' ')[1];
+    console.log('token:   '+token);
+    jwt.verify(token, 'secretkey', (err, user) => {
+      if (err) res.sendStatus(401)
+      else {
+        next();
+      }
+    })
+  } else res.sendStatus(401)
+}
 
 const router = Router();
 
